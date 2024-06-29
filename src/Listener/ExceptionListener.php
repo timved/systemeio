@@ -16,10 +16,10 @@ class ExceptionListener
         $exception = $event->getThrowable();
 
         $response = new JsonResponse([]);
-        $response->setData(['error' => $exception->getMessage()]);
 
         if ($exception instanceof BadRequestHttpException) {
             $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $response->setData(['error' => $exception->getMessage()]);
         } else {
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         }

@@ -6,8 +6,5 @@ namespace App\Request;
 
 interface SelfValidatorInterface
 {
-    /**
-     * @throws \InvalidArgumentException
-     */
     public function validate(): void;
 }
