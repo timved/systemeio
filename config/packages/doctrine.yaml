@@ -27,8 +27,14 @@ doctrine:
 when@test:
     doctrine:
         dbal:
-            # "TEST_TOKEN" is typically set by ParaTest
-            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+            host: '%env(string:DATABASE_HOST)%'
+            port: '%env(string:DATABASE_PORT)%'
+            dbname: '%env(string:DATABASE_NAME)%'
+            user: '%env(string:DATABASE_USER)%'
+            password: '%env(string:DATABASE_PASSWORD)%'
+            server_version: '16'
+            driver: pdo_pgsql
+#            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
 
 when@prod:
     doctrine:

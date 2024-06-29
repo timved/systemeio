@@ -20,5 +20,16 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Listener\ExceptionListener:
+        tags: [kernel.event_listener]
+
+    Systemeio\TestForCandidates\PaymentProcessor\PaypalPaymentProcessor:
+    Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor:
+
+    App\Service\PaymentRouter:
+        calls:
+            - register: ['paypal', '@App\Service\PaypalPayment']
+            - register: ['stripe', '@App\Service\StripePayment']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
