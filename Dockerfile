@@ -6,14 +6,20 @@ RUN apk add --no-cache postgresql-dev \
     && docker-php-ext-install pdo_pgsql pdo_mysql
 
 # xdebug
-RUN apk add --no-cache linux-headers \
+ARG INSTALL_XDEBUG=false
+RUN if [ ${INSTALL_XDEBUG} = true ]; then \
+    apk add --no-cache linux-headers \
     && apk add --update --no-cache --virtual .build-dependencies $PHPIZE_DEPS\
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && pecl clear-cache \
-    && apk del .build-dependencies
-
-COPY ./docker/php/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    && apk del .build-dependencies \
+    && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_port=9009" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host=172.17.0.1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+;fi
 
 ENV COMPOSER_CACHE_DIR=/tmp/composer-cache
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
