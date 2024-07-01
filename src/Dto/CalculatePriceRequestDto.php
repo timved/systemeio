@@ -28,7 +28,7 @@ class CalculatePriceRequestDto extends TaxCountryRequestDto
         return $this->productId;
     }
 
-    public function getCouponCode(): string
+    public function getCouponCode(): ?string
     {
         return $this->couponCode;
     }
